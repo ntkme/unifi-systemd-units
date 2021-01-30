@@ -1,0 +1,20 @@
+[Unit]
+Description=Podman container-certbot-unifi.service
+Documentation=man:podman-generate-systemd(1)
+Wants=network.target
+After=network-online.target
+ConditionPathIsDirectory=/mnt/data/etc/letsencrypt
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+Restart=on-failure
+TimeoutStopSec=70
+ExecStartPre=/bin/rm -f %t/container-certbot-unifi.pid %t/container-certbot-unifi.ctr-id
+ExecStart=/usr/bin/podman run --conmon-pidfile %t/container-certbot-unifi.pid --cidfile %t/container-certbot-unifi.ctr-id --cgroups=no-conmon -d --replace --name certbot-unifi --label io.containers.autoupdate=image --net host --volume /mnt/data/etc/letsencrypt:/etc/letsencrypt:ro --volume /mnt/data/ssh/id_rsa:/root/.ssh/id_rsa:ro --volume /var/run/ssh_proxy_port:/etc/unifi-os/ssh_proxy_port:ro --volume /mnt/data/unifi-os:/data:rw --entrypoint /bin/sh docker.io/ntkme/unifi-ssh-proxy -c "trap 'exit 0' TERM && trap '( cd \"/etc/letsencrypt/live/$$(hostname)\" && if ! cmp -s fullchain.pem /data/unifi-core/config/unifi-core.crt || ! cmp -s privkey.pem /data/unifi-core/config/unifi-core.key; then cp -H fullchain.pem /data/unifi-core/config/unifi-core.crt && cp -H privkey.pem /data/unifi-core/config/unifi-core.key && /sbin/ssh-proxy \"openssl pkcs12 -export -inkey /data/unifi-core/config/unifi-core.key -in /data/unifi-core/config/unifi-core.crt -out /data/unifi/data/keystore -name unifi -passout pass:aircontrolenterprise && nohup unifi-os restart >/dev/null 2>&1 &\"; fi )' HUP && kill -HUP $$$$ && while :; do wait && { sleep infinity & }; done"
+ExecStop=/usr/bin/podman stop --ignore --cidfile %t/container-certbot-unifi.ctr-id -t 10
+ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/container-certbot-unifi.ctr-id
+PIDFile=%t/container-certbot-unifi.pid
+Type=forking
+
+[Install]
+WantedBy=multi-user.target

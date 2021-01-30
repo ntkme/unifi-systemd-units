@@ -1,0 +1,14 @@
+[Unit]
+Description=Configure CNI %j-%i Network
+DefaultDependencies=no
+Conflicts=shutdown.target
+Before=sysinit.target shutdown.target
+
+[Service]
+ExecStart=/usr/bin/podman network create --%j %i %j-%i
+ExecStop=/usr/bin/podman network rm %j-%i
+Type=oneshot
+RemainAfterExit=yes
+
+[Install]
+WantedBy=sysinit.target

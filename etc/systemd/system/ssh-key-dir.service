@@ -1,0 +1,13 @@
+[Unit]
+Description=SSH authorized key directory service
+After=ssh-key-dir.path
+Requires=ssh-key-dir.path
+ConditionFileNotEmpty=/mnt/data/ssh/id_rsa.pub
+ConditionPathIsReadWrite=/root/.ssh/authorized_keys
+
+[Service]
+ExecStart=/bin/sh -c '{ cat /mnt/data/ssh/id_rsa.pub && cat /mnt/data/.ssh/authorized_keys.d/*; } | tee /root/.ssh/authorized_keys'
+Type=oneshot
+
+[Install]
+WantedBy=multi-user.target

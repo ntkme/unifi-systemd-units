@@ -1,0 +1,20 @@
+[Unit]
+Description=Podman container-boringtun@%i.service
+Documentation=man:podman-generate-systemd(1)
+Wants=network.target
+After=network-online.target
+ConditionPathIsDirectory=/mnt/data/etc/wireguard
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+Restart=on-failure
+TimeoutStopSec=70
+ExecStartPre=/bin/rm -f %t/container-boringtun-%i.pid %t/container-boringtun-%i.ctr-id
+ExecStart=/usr/bin/podman run --conmon-pidfile %t/container-boringtun-%i.pid --cidfile %t/container-boringtun-%i.ctr-id --cgroups=no-conmon -d --replace --name boringtun-%i --label io.containers.autoupdate=image --cap-add NET_ADMIN --cap-add NET_RAW --cap-add MKNOD --publish 51820:51820/udp --volume /mnt/data/etc/wireguard:/etc/wireguard:rw --env INTERFACE=%i docker.io/ntkme/boringtun
+ExecStop=/usr/bin/podman stop --ignore --cidfile %t/container-boringtun-%i.ctr-id -t 10
+ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/container-boringtun-%i.ctr-id
+PIDFile=%t/container-boringtun-%i.pid
+Type=forking
+
+[Install]
+WantedBy=multi-user.target
