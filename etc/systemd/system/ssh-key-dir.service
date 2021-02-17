@@ -1,7 +1,7 @@
 [Unit]
 Description=SSH authorized key directory service
-After=ssh-key-dir.path
-Requires=ssh-key-dir.path
+After=%N.path
+Requires=%N.path
 ConditionFileNotEmpty=/mnt/data/ssh/id_rsa.pub
 ConditionPathIsReadWrite=/root/.ssh/authorized_keys
 

@@ -1,6 +1,6 @@
 [Unit]
 Description=SSH authorized key directory monitor
-PartOf=ssh-key-dir.service
+PartOf=%N.service
 
 [Path]
 PathChanged=/mnt/data/.ssh/authorized_keys.d
