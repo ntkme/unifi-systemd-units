@@ -1,0 +1,11 @@
+[Unit]
+Description=Caddy certificates monitor
+PartOf=%N.service
+
+[Path]
+PathChanged=/mnt/data/var/lib/caddy/certificates/acme-staging-v02.api.letsencrypt.org-directory/%H/%H.json
+PathChanged=/mnt/data/var/lib/caddy/certificates/acme-v02.api.letsencrypt.org-directory/%H/%H.json
+PathChanged=/mnt/data/var/lib/caddy/certificates/acme.zerossl.com-v2-DV90/%H/%H.json
+
+[Install]
+WantedBy=multi-user.target
