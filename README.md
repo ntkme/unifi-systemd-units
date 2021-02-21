@@ -214,7 +214,7 @@ Created symlink /etc/systemd/system/multi-user.target.wants/ssh-key-dir.service 
 
 #### unifi-entrypoint
 
-This service provides a seamless migration for `udm-boot` and `unifi-entrypoint`. Existing scripts will continue to work on boot.
+This service provides a seamless migration for `udm-boot`. Existing scripts will continue to work on boot.
 
 ###### Migrating from `udm-boot`
 
@@ -223,13 +223,4 @@ To migrate from [udm-boot](https://github.com/boostchicken/udm-utilities), pleas
 ``` sh
 podman exec unifi-os dpkg -P udm-boot
 podman exec unifi-systemd systemctl enable unifi-entrypoint@mnt-data-on_boot.d.service
-```
-
-###### Migrating from `unifi-entrypoint`
-
-To migrate from [unifi-entrypoint](https://github.com/ntkme/unifi-entrypoint), please install `unifi-systemd` and `unifi-systemd-units` first.
-
-``` sh
-podman exec unifi-os dpkg -P unifi-entrypoint
-podman exec unifi-systemd systemctl enable unifi-entrypoint@mnt-data-entrypoint.d.service
 ```
