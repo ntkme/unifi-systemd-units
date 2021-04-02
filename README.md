@@ -57,8 +57,8 @@ bash-5.0# mkdir -p /mnt/data/etc/wireguard
 bash-5.0# systemctl enable --now container-boringtun@wg0.service
 Created symlink /etc/systemd/system/multi-user.target.wants/container-boringtun@wg0.service → /etc/systemd/system/container-boringtun@.service.
 bash-5.0# podman ps
-CONTAINER ID  IMAGE                           COMMAND               CREATED         STATUS             PORTS                     NAMES
-cfe45bc18948  docker.io/ntkme/boringtun                             5 seconds ago   Up 4 seconds ago   0.0.0.0:51820->51820/udp  boringtun-wg0
+CONTAINER ID  IMAGE                         COMMAND               CREATED         STATUS             PORTS                     NAMES
+cfe45bc18948  ghcr.io/ntkme/boringtun                             5 seconds ago   Up 4 seconds ago   0.0.0.0:51820->51820/udp  boringtun-wg0
 ```
 
 #### container-caddy
@@ -162,9 +162,9 @@ bash-5.0# systemctl enable --now container-certbot{,-unifi}.service
 Created symlink /etc/systemd/system/multi-user.target.wants/container-certbot.service → /etc/systemd/system/container-certbot.service.
 Created symlink /etc/systemd/system/multi-user.target.wants/container-certbot-unifi.service → /etc/systemd/system/container-certbot-unifi.service.
 bash-5.0# podman ps
-CONTAINER ID  IMAGE                            COMMAND               CREATED         STATUS             PORTS                     NAMES
-296d16459e28  docker.io/ntkme/certbot          --http-01-port 80...  3 seconds ago   Up 2 seconds ago                             certbot
-4653cc5adcca  docker.io/ntkme/unifi-ssh-proxy  -c trap 'exit 0' ...  3 seconds ago   Up 2 seconds ago                             certbot-unifi
+CONTAINER ID  IMAGE                          COMMAND               CREATED         STATUS             PORTS                     NAMES
+296d16459e28  ghcr.io/ntkme/certbot          --http-01-port 80...  3 seconds ago   Up 2 seconds ago                             certbot
+4653cc5adcca  ghcr.io/ntkme/unifi-ssh-proxy  -c trap 'exit 0' ...  3 seconds ago   Up 2 seconds ago                             certbot-unifi
 ```
 
 #### container-inadyn
@@ -196,8 +196,8 @@ bash-5.0# ls /mnt/data/etc/wpa_supplicant/wpa_supplicant.conf
 bash-5.0# systemctl enable --now container-wpa_supplicant@eth8.service
 Created symlink /etc/systemd/system/multi-user.target.wants/container-wpa_supplicant@eth8.service → /etc/systemd/system/container-wpa_supplicant@.service.
 bash-5.0# podman ps
-CONTAINER ID  IMAGE                           COMMAND               CREATED        STATUS            PORTS                     NAMES
-7618121be303  docker.io/ntkme/wpa_supplicant  -D wired -i eth8 ...  2 seconds ago  Up 2 seconds ago                            wpa_supplicant-eth8
+CONTAINER ID  IMAGE                         COMMAND               CREATED        STATUS            PORTS                     NAMES
+7618121be303  ghcr.io/ntkme/wpa_supplicant  -D wired -i eth8 ...  2 seconds ago  Up 2 seconds ago                            wpa_supplicant-eth8
 ```
 
 #### ssh-key-dir

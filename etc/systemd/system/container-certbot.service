@@ -11,7 +11,7 @@ Environment=PODMAN_SYSTEMD_UNIT=%n
 Restart=on-failure
 TimeoutStopSec=70
 ExecStartPre=/bin/rm -f %t/container-certbot.pid %t/container-certbot.ctr-id
-ExecStart=/usr/bin/podman run --conmon-pidfile %t/container-certbot.pid --cidfile %t/container-certbot.ctr-id --cgroups=no-conmon -d --replace --name certbot --label io.containers.autoupdate=image --net host --volume /mnt/data/etc/letsencrypt:/etc/letsencrypt:rw --volume /var/run/podman/podman.sock:/var/run/docker.sock docker.io/ntkme/certbot --http-01-port 8008
+ExecStart=/usr/bin/podman run --conmon-pidfile %t/container-certbot.pid --cidfile %t/container-certbot.ctr-id --cgroups=no-conmon -d --replace --name certbot --label io.containers.autoupdate=image --net host --volume /mnt/data/etc/letsencrypt:/etc/letsencrypt:rw --volume /var/run/podman/podman.sock:/var/run/docker.sock ghcr.io/ntkme/certbot --http-01-port 8008
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/container-certbot.ctr-id -t 10
 ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/container-certbot.ctr-id
 PIDFile=%t/container-certbot.pid
