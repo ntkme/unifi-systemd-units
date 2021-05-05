@@ -16,7 +16,7 @@ fi
 
 Install [unifi-systemd](https://github.com/ntkme/unifi-systemd).
 
-```
+``` sh
 podman exec unifi-os sh -c "curl -fsSLo /tmp/unifi-systemd_1.0.0_all.deb https://github.com/ntkme/unifi-systemd/releases/download/v1.0.0/unifi-systemd_1.0.0_all.deb && dpkg -i /tmp/unifi-systemd_1.0.0_all.deb && rm /tmp/unifi-systemd_1.0.0_all.deb"
 ```
 
