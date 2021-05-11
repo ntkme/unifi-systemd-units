@@ -35,7 +35,7 @@ unifi-systemd: running
 Install systemd units from this repository to `/mnt/data/etc/systemd/system`.
 
 ``` sh
-curl -fsSL https://github.com/ntkme/unifi-systemd-units/archive/main.tar.gz | tar -vxzC /mnt/data --strip-components 1 --exclude '*/*.md' --exclude '*/LICENSE' && unifi-systemd reload
+curl -fsSL https://github.com/ntkme/unifi-systemd-units/archive/main.tar.gz | tar -vxzC /mnt/data --strip-components 1 --exclude '*/docs' --exclude '*/*.md' --exclude '*/LICENSE' && unifi-systemd reload
 ```
 
 #### Manage `systemd` Units
