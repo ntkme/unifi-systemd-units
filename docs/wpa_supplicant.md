@@ -1,6 +1,6 @@
 # container-wpa\_supplicant
 
-This services provides `wpa_supplicant`.
+This services provides [wpa\_supplicant](https://w1.fi/wpa_supplicant/).
 
 To start this service, put the config directory at `/mnt/data/etc/wpa_supplicant`. Make sure to use the correct interface when starting this service.
 
