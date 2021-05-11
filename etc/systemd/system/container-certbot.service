@@ -4,6 +4,7 @@ Documentation=man:podman-generate-systemd(1)
 Requires=podman.socket
 Wants=network.target
 After=network-online.target podman.socket
+RequiresMountsFor=/var/lib/containers/storage /var/run/containers/storage
 ConditionPathIsDirectory=/mnt/data/etc/letsencrypt
 
 [Service]

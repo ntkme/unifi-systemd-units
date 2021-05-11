@@ -3,6 +3,7 @@ Description=Podman container-wpa_supplicant@%i.service
 Documentation=man:podman-generate-systemd(1)
 Wants=network.target
 After=network.target
+RequiresMountsFor=/var/lib/containers/storage /var/run/containers/storage
 ConditionFileNotEmpty=/mnt/data/etc/wpa_supplicant/wpa_supplicant.conf
 
 [Service]

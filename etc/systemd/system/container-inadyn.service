@@ -3,6 +3,7 @@ Description=Podman container-inadyn.service
 Documentation=man:podman-generate-systemd(1)
 Wants=network.target
 After=network-online.target
+RequiresMountsFor=/var/lib/containers/storage /var/run/containers/storage
 ConditionFileNotEmpty=/mnt/data/etc/inadyn/inadyn.conf
 
 [Service]

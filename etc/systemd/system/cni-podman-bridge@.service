@@ -3,7 +3,7 @@ Description=Configure CNI %j-%i Network
 DefaultDependencies=no
 Conflicts=shutdown.target
 Before=sysinit.target shutdown.target
-Wants=cni-dhcp.socket
+Requires=cni-dhcp.socket
 After=cni-dhcp.socket
 
 [Service]
