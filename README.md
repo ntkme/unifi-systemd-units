@@ -46,9 +46,11 @@ Use `unifi-systemd shell` to enter the container shell to interact with `systemc
 
 See the links below for documentation of services provided by this repository.
 
+- [container-adguardhome](docs/adguardhome.md)
 - [container-boringtun](docs/boringtun.md)
 - [container-caddy{,-unifi}](docs/caddy.md)
 - [container-certbot{,-unifi}](docs/certbot.md)
+- [container-homebridge](docs/homebridge.md)
 - [container-inadyn](docs/inadyn.md)
 - [container-wpa\_supplicant](docs/wpa_supplicant.md)
 - [ssh-key-dir](docs/ssh-key-dir.md)
