@@ -1,8 +1,8 @@
 # ssh-key-dir
 
-This service provides a directory `/mnt/data/.ssh/authorized_keys.d/` to persist your ssh public keys.
+This service provides a directory `/mnt/data/etc/ssh/authorized_keys.d/` to persist your ssh public keys.
 
-Any change made to public key files in `/mnt/data/.ssh/authorized_keys.d/` will be automatically synchronized to `/root/.ssh/authorized_keys`.
+Any change made to public key files in `/mnt/data/etc/ssh/authorized_keys.d/` will be automatically synchronized to `/root/.ssh/authorized_keys`.
 
 ```
 # unifi-systemd shell
