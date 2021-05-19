@@ -55,6 +55,8 @@ To create a new container service unit, see [podman-generate-systemd(1)](https:/
 
 It is recommended to gracefully stop all services with `unifi-systemd stop` before create a backup. Services can be restarted with `unifi-systemd start`.
 
+By default, the following directories are used to store config and data.
+
 - `/mnt/data/etc`
 - `/mnt/data/var`
 
