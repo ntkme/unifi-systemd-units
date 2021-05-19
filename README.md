@@ -22,16 +22,6 @@ Install [unifi-systemd](https://github.com/ntkme/unifi-systemd).
 podman exec unifi-os sh -c "curl -fsSLo /tmp/unifi-systemd_1.0.0_all.deb https://github.com/ntkme/unifi-systemd/releases/download/v1.0.0/unifi-systemd_1.0.0_all.deb && dpkg -i /tmp/unifi-systemd_1.0.0_all.deb && rm /tmp/unifi-systemd_1.0.0_all.deb"
 ```
 
-Verify unifi-systemd is running.
-
-```
-# unifi-systemd
-Usage: /usr/sbin/unifi-systemd [status start stop reload restart shell]
-
-# unifi-systemd status
-unifi-systemd: running
-```
-
 #### Install `systemd` Units
 
 Install systemd units from this repository to `/mnt/data/etc/systemd/system`.
@@ -58,6 +48,26 @@ See the links below for documentation of services provided by this repository.
 - [ssh-key-dir](docs/ssh-key-dir.md)
 
 To create a new container service unit, see [podman-generate-systemd(1)](https://docs.podman.io/en/latest/markdown/podman-generate-systemd.1.html).
+
+#### Config and Data Directories
+
+###### Backup
+
+It is recommended to gracefully stop all services with `unifi-systemd stop` before create a backup. Services can be restarted with `unifi-systemd start`.
+
+- `/mnt/data/etc`
+- `/mnt/data/var`
+
+###### Store Data on Hard Disk
+
+To store data on hard disk instead of the eMMC, move the directories into `/mnt/data_ext` and create symlinks on `/mnt/data`.
+
+``` sh
+unifi-systemd stop
+mv /mnt/data/etc /mnt/data_ext/etc && ln -s /mnt/data_ext/etc /mnt/data/etc
+mv /mnt/data/var /mnt/data_ext/var && ln -s /mnt/data_ext/var /mnt/data/var
+unifi-systemd start
+```
 
 #### Migrating from `udm-boot`
 
