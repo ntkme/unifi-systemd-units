@@ -12,6 +12,7 @@ Restart=on-failure
 TimeoutStopSec=70
 ExecStartPre=/bin/rm -f %t/container-boringtun-%i.pid %t/container-boringtun-%i.ctr-id
 ExecStart=/usr/bin/podman run --conmon-pidfile %t/container-boringtun-%i.pid --cidfile %t/container-boringtun-%i.ctr-id --cgroups=no-conmon -d --replace --name boringtun-%i --label io.containers.autoupdate=image --cap-add NET_ADMIN --cap-add NET_RAW --cap-add MKNOD --publish 51820:51820/udp --volume /mnt/data/etc/wireguard:/etc/wireguard:rw --env INTERFACE=%i ghcr.io/ntkme/boringtun
+ExecReload=/usr/bin/podman exec boringtun-%i /bin/sh -c 'wg-quick strip "$$INTERFACE" | wg setconf "$$INTERFACE" /dev/stdin'
 ExecStop=-/usr/bin/podman exec boringtun-%i /bin/sh -c 'wg-quick down "$$INTERFACE"'
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/container-boringtun-%i.ctr-id -t 10
 ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/container-boringtun-%i.ctr-id
