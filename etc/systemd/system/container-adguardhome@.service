@@ -12,7 +12,7 @@ Environment=PODMAN_SYSTEMD_UNIT=%n
 Restart=on-failure
 TimeoutStopSec=70
 ExecStartPre=/bin/rm -f %t/container-adguardhome.pid %t/container-adguardhome.ctr-id
-ExecStart=/usr/bin/podman run --conmon-pidfile %t/container-adguardhome.pid --cidfile %t/container-adguardhome.ctr-id --cgroups=no-conmon --replace -d --rm --name adguardhome --net %i --volume /mnt/data/var/lib/adguardhome:/opt/adguardhome/work --volume /mnt/data/etc/adguardhome:/opt/adguardhome/conf docker.io/adguard/adguardhome
+ExecStart=/usr/bin/podman run --conmon-pidfile %t/container-adguardhome.pid --cidfile %t/container-adguardhome.ctr-id --cgroups=no-conmon --replace -d --rm --name adguardhome-%i --net %i --volume /mnt/data/var/lib/adguardhome:/opt/adguardhome/work --volume /mnt/data/etc/adguardhome:/opt/adguardhome/conf docker.io/adguard/adguardhome
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/container-adguardhome.ctr-id -t 10
 ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/container-adguardhome.ctr-id
 PIDFile=%t/container-adguardhome.pid

@@ -24,5 +24,5 @@ Created symlink /etc/systemd/system/multi-user.target.wants/container-adguardhom
 
 bash-5.1# podman ps
 CONTAINER ID  IMAGE                                 COMMAND               CREATED        STATUS            PORTS  NAMES
-533166ac9121  docker.io/adguard/adguardhome:latest  --no-check-update...  4 seconds ago  Up 4 seconds ago         adguardhome
+533166ac9121  docker.io/adguard/adguardhome:latest  --no-check-update...  4 seconds ago  Up 4 seconds ago         adguardhome-bridge-br0
 ```

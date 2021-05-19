@@ -23,5 +23,5 @@ Created symlink /etc/systemd/system/multi-user.target.wants/container-homebridge
 
 bash-5.1# podman ps
 CONTAINER ID  IMAGE                             COMMAND  CREATED             STATUS                 PORTS  NAMES
-c31901a827cf  docker.io/oznu/homebridge:latest           About a minute ago  Up About a minute ago         homebridge
+c31901a827cf  docker.io/oznu/homebridge:latest           About a minute ago  Up About a minute ago         homebridge-bridge-br0
 ```

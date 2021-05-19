@@ -1,5 +1,7 @@
 # unifi-systemd-units
 
+[![build](https://github.com/ntkme/unifi-systemd-units/actions/workflows/build.yml/badge.svg)](https://github.com/ntkme/unifi-systemd-units/actions/workflows/build.yml)
+
 Systemd units for [unifi-systemd](https://github.com/ntkme/unifi-systemd) [container](https://github.com/ntkme/container-systemd-podman)
 
 ## Usage
@@ -35,7 +37,7 @@ unifi-systemd: running
 Install systemd units from this repository to `/mnt/data/etc/systemd/system`.
 
 ``` sh
-curl -fsSL https://github.com/ntkme/unifi-systemd-units/archive/HEAD.tar.gz | tar -vxzC /mnt/data --strip-components 1 --exclude '*/docs' --exclude '*/*.md' --exclude '*/LICENSE' && unifi-systemd reload
+curl -fsSL https://github.com/ntkme/unifi-systemd-units/archive/HEAD.tar.gz | tar -vxzC /mnt/data --strip-components 1 --exclude '*/.github' --exclude '*/docs' --exclude '*/test' --exclude '*/*.md' --exclude '*/LICENSE' && unifi-systemd reload
 ```
 
 #### Manage `systemd` Units

@@ -1,0 +1,51 @@
+name: build
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: Build
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Mock UbiOS
+        run: |-
+          sudo mkdir -p /mnt/data/podman/storage/overlay-images \
+                        /mnt/data/podman/storage/overlay-layers \
+                        /mnt/data/podman/storage/vfs-images \
+                        /mnt/data/podman/storage/vfs-layers
+          sudo touch /mnt/data/podman/storage/overlay-images/images.lock \
+                     /mnt/data/podman/storage/overlay-layers/layers.lock \
+                     /mnt/data/podman/storage/vfs-images/images.lock \
+                     /mnt/data/podman/storage/vfs-layers/layers.lock
+          sudo podman --root /mnt/data/podman/storage image ls
+          sudo mkdir -p /mnt/data/ssh
+          sudo ssh-keygen -t rsa -C root@ubnt -f /mnt/data/ssh/id_rsa -N ''
+          sudo cp /mnt/data/ssh/id_rsa.pub /root/.ssh/authorized_keys
+          printf 22 | sudo tee /var/run/ssh_proxy_port
+          sudo ssh -i /mnt/data/ssh/id_rsa -o StrictHostKeyChecking=no -- root@localhost true
+
+      - name: Mock UniFi OS
+        run: |-
+          sudo podman build -t localhost/unifi-os test/unifi-os
+          sudo podman run -d --name unifi-os --net host --volume /mnt/data/ssh/id_rsa:/root/.ssh/id_rsa:ro --volume /var/run/ssh_proxy_port:/etc/unifi-os/ssh_proxy_port:ro localhost/unifi-os
+          sudo podman exec unifi-os ssh-proxy true
+
+      - name: Install UniFi Systemd
+        run: |-
+          sudo podman exec unifi-os sh -c "curl -fsSLo /tmp/unifi-systemd_1.0.0_all.deb https://github.com/ntkme/unifi-systemd/releases/download/v1.0.0/unifi-systemd_1.0.0_all.deb && dpkg -i /tmp/unifi-systemd_1.0.0_all.deb && rm /tmp/unifi-systemd_1.0.0_all.deb"
+          sudo podman exec unifi-systemd true
+
+      - name: Install UniFi Systemd Units
+        run: |-
+          tar -cz etc | sudo tar -vxzC /mnt/data
+          sudo unifi-systemd reload
+          sudo unifi-systemd status
+
+      - name: Test UniFi Systemd Units
+        run: |-
+          find test -name 'test_*.sh' -print0 | sort -z | xargs -0 -r -t -n 1 -- sudo bash -xe

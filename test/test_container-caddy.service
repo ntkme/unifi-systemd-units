@@ -1,0 +1,15 @@
+#!/bin/sh
+
+mkdir -p /mnt/data/etc/caddy /mnt/data/var/lib/caddy
+
+tee /mnt/data/etc/caddy/Caddyfile <<'EOF'
+unifi.localdomain
+EOF
+
+podman exec unifi-systemd systemctl start container-caddy.service
+
+timeout 60 sh -c 'until curl -fksSL https://127.0.0.1/; do sleep 1; done'
+
+podman exec unifi-systemd systemctl stop container-caddy.service
+
+podman exec unifi-systemd journalctl -u container-caddy.service
