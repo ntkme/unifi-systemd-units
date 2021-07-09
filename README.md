@@ -7,14 +7,8 @@ Systemd units for [unifi-systemd](https://github.com/ntkme/unifi-systemd) [conta
 ## Usage
 
 #### Install `unifi-systemd`
-
-For UniFi Dream Machine firmware <1.10.0, pull the legacy container with the support for legacy kernel.
-
-``` sh
-if podman exec unifi-os dpkg --compare-versions "$(uname -r)" lt 4.19 2>/dev/null; then
-  podman pull ghcr.io/ntkme/systemd-podman:legacy && podman tag ghcr.io/ntkme/systemd-podman:legacy ghcr.io/ntkme/systemd-podman:latest
-fi
-```
+ 
+- **UniFi OS Version 1.10.0 or higher is required.**
 
 Install [unifi-systemd](https://github.com/ntkme/unifi-systemd).
 
