@@ -1,21 +1,21 @@
 [Unit]
 Description=Podman container-wpa_supplicant@%i.service
 Documentation=man:podman-generate-systemd(1)
-Wants=network.target
-After=network.target
-RequiresMountsFor=/var/lib/containers/storage /var/run/containers/storage
+Wants=network-online.target
+After=network-online.target
+RequiresMountsFor=%t/containers
 ConditionFileNotEmpty=/mnt/data/etc/wpa_supplicant/wpa_supplicant.conf
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
 Restart=on-failure
 TimeoutStopSec=70
-ExecStartPre=/bin/rm -f %t/container-wpa_supplicant-%i.pid %t/container-wpa_supplicant-%i.ctr-id
-ExecStart=/usr/bin/podman run --conmon-pidfile %t/container-wpa_supplicant-%i.pid --cidfile %t/container-wpa_supplicant-%i.ctr-id --cgroups=no-conmon -d --replace --name wpa_supplicant-%i --label io.containers.autoupdate=image --cap-add NET_RAW --network host --volume /mnt/data/etc/wpa_supplicant:/etc/wpa_supplicant:ro ghcr.io/ntkme/wpa_supplicant -D wired -i %i -c wpa_supplicant.conf
-ExecStop=/usr/bin/podman stop --ignore --cidfile %t/container-wpa_supplicant-%i.ctr-id -t 10
-ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/container-wpa_supplicant-%i.ctr-id
-PIDFile=%t/container-wpa_supplicant-%i.pid
-Type=forking
+ExecStartPre=/bin/rm -f %t/%n.ctr-id
+ExecStart=/usr/bin/podman run --cidfile=%t/%n.ctr-id --sdnotify=conmon --cgroups=no-conmon --rm --replace -d --name wpa_supplicant-%i --label io.containers.autoupdate=image --cap-add NET_RAW --network host --volume /mnt/data/etc/wpa_supplicant:/etc/wpa_supplicant:ro ghcr.io/ntkme/wpa_supplicant -D wired -i %i -c wpa_supplicant.conf
+ExecStop=/usr/bin/podman stop --ignore --cidfile=%t/%n.ctr-id
+ExecStopPost=/usr/bin/podman rm -f --ignore --cidfile=%t/%n.ctr-id
+Type=notify
+NotifyAccess=all
 
 [Install]
 WantedBy=multi-user.target

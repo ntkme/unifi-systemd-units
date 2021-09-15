@@ -1,23 +1,23 @@
 [Unit]
 Description=Podman container-boringtun@%i.service
 Documentation=man:podman-generate-systemd(1)
-Wants=network.target
+Wants=network-online.target
 After=network-online.target
-RequiresMountsFor=/var/lib/containers/storage /var/run/containers/storage
+RequiresMountsFor=%t/containers
 ConditionPathIsDirectory=/mnt/data/etc/wireguard
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
 Restart=on-failure
 TimeoutStopSec=70
-ExecStartPre=/bin/rm -f %t/container-boringtun-%i.pid %t/container-boringtun-%i.ctr-id
-ExecStart=/usr/bin/podman run --conmon-pidfile %t/container-boringtun-%i.pid --cidfile %t/container-boringtun-%i.ctr-id --cgroups=no-conmon -d --replace --name boringtun-%i --label io.containers.autoupdate=image --cap-add NET_ADMIN --cap-add NET_RAW --cap-add MKNOD --publish 51820:51820/udp --volume /mnt/data/etc/wireguard:/etc/wireguard:rw --env INTERFACE=%i ghcr.io/ntkme/boringtun
+ExecStartPre=/bin/rm -f %t/%n.ctr-id
+ExecStart=/usr/bin/podman run --cidfile=%t/%n.ctr-id --sdnotify=conmon --cgroups=no-conmon --rm --replace -d --name boringtun-%i --label io.containers.autoupdate=image --cap-add NET_ADMIN --cap-add NET_RAW --cap-add MKNOD --publish 51820:51820/udp --volume /mnt/data/etc/wireguard:/etc/wireguard:rw --env INTERFACE=%i ghcr.io/ntkme/boringtun
 ExecReload=/usr/bin/podman exec boringtun-%i /bin/sh -c 'wg-quick strip "$$INTERFACE" | wg setconf "$$INTERFACE" /dev/stdin'
 ExecStop=-/usr/bin/podman exec boringtun-%i /bin/sh -c 'wg-quick down "$$INTERFACE"'
-ExecStop=/usr/bin/podman stop --ignore --cidfile %t/container-boringtun-%i.ctr-id -t 10
-ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/container-boringtun-%i.ctr-id
-PIDFile=%t/container-boringtun-%i.pid
-Type=forking
+ExecStop=/usr/bin/podman stop --ignore --cidfile=%t/%n.ctr-id
+ExecStopPost=/usr/bin/podman rm -f --ignore --cidfile=%t/%n.ctr-id
+Type=notify
+NotifyAccess=all
 
 [Install]
 WantedBy=multi-user.target

@@ -2,7 +2,6 @@
 Description=Caddy cerfiticates service
 Requires=%N.path
 After=%N.path
-RequiresMountsFor=/var/lib/containers/storage /var/run/containers/storage
 ConditionPathIsDirectory=/mnt/data/var/lib/caddy/certificates
 
 [Service]
