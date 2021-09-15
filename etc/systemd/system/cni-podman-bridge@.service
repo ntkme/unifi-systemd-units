@@ -7,7 +7,7 @@ Requires=cni-dhcp.socket
 After=cni-dhcp.socket
 
 [Service]
-ExecStart=/bin/sh -c 'echo "$1" | tee /etc/cni/net.d/%j-%i.conflist' -- '{"cniVersion":"0.4.0","name":"%j-%i","plugins":[{"%j":"%i","ipam":{"type":"dhcp"},"type":"%j"},{"capabilities":{"portMappings":true},"type":"portmap"},{"type":"firewall"},{"type":"tuning"}]}'
+ExecStart=/bin/sh -c 'mkdir -p /etc/cni/net.d && echo "$1" | tee /etc/cni/net.d/%j-%i.conflist' -- '{"cniVersion":"0.4.0","name":"%j-%i","plugins":[{"%j":"%i","ipam":{"type":"dhcp"},"type":"%j"},{"capabilities":{"portMappings":true},"type":"portmap"},{"type":"firewall"},{"type":"tuning"}]}'
 ExecStop=/bin/rm -f /etc/cni/net.d/%j-%i.conflist
 Type=oneshot
 RemainAfterExit=yes
