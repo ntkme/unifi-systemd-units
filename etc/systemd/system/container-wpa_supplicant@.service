@@ -11,7 +11,7 @@ Environment=PODMAN_SYSTEMD_UNIT=%n
 Restart=on-failure
 TimeoutStopSec=70
 ExecStartPre=/bin/rm -f %t/%n.ctr-id
-ExecStart=/usr/bin/podman run --cidfile=%t/%n.ctr-id --sdnotify=conmon --cgroups=no-conmon --rm --replace -d --name wpa_supplicant-%i --label io.containers.autoupdate=image --cap-add NET_RAW --network host --volume /mnt/data/etc/wpa_supplicant:/etc/wpa_supplicant:ro ghcr.io/ntkme/wpa_supplicant:edge -D wired -i %i -c wpa_supplicant.conf
+ExecStart=/usr/bin/podman run --cidfile=%t/%n.ctr-id --sdnotify=conmon --cgroups=no-conmon --rm -d --replace --name wpa_supplicant-%i --label io.containers.autoupdate=image --cap-add NET_RAW --network host --volume /mnt/data/etc/wpa_supplicant:/etc/wpa_supplicant:ro ghcr.io/ntkme/wpa_supplicant:edge -D wired -i %i -c wpa_supplicant.conf
 ExecStop=/usr/bin/podman stop --ignore --cidfile=%t/%n.ctr-id
 ExecStopPost=/usr/bin/podman rm -f --ignore --cidfile=%t/%n.ctr-id
 Type=notify

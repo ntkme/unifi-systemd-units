@@ -11,7 +11,7 @@ Environment=PODMAN_SYSTEMD_UNIT=%n
 Restart=on-failure
 TimeoutStopSec=70
 ExecStartPre=/bin/rm -f %t/%n.ctr-id
-ExecStart=/usr/bin/podman run --cidfile=%t/%n.ctr-id --sdnotify=conmon --cgroups=no-conmon --rm --replace -d --name boringtun-%i --label io.containers.autoupdate=image --cap-add NET_ADMIN --cap-add NET_RAW --cap-add MKNOD --publish 51820:51820/udp --volume /mnt/data/etc/wireguard:/etc/wireguard:rw ghcr.io/ntkme/boringtun:edge %i
+ExecStart=/usr/bin/podman run --cidfile=%t/%n.ctr-id --sdnotify=conmon --cgroups=no-conmon --rm -d --replace --name boringtun-%i --label io.containers.autoupdate=image --cap-add NET_ADMIN --cap-add NET_RAW --cap-add MKNOD --publish 51820:51820/udp --volume /mnt/data/etc/wireguard:/etc/wireguard:rw ghcr.io/ntkme/boringtun:edge %i
 ExecReload=/usr/bin/podman exec boringtun-%i /bin/sh -c 'wg-quick strip %i | wg setconf %i /dev/stdin'
 ExecStop=-/usr/bin/podman exec boringtun-%i /bin/sh -c 'wg-quick down %i'
 ExecStop=/usr/bin/podman stop --ignore --cidfile=%t/%n.ctr-id
