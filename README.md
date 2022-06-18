@@ -8,7 +8,7 @@ Systemd units for [unifi-systemd](https://github.com/ntkme/unifi-systemd) [conta
 
 #### Install `unifi-systemd`
  
-- **UniFi OS Version 1.10.0 or higher is required.**
+- **UniFi OS `>=1.10.0 <2.0.0` is required.**
 
 Install [unifi-systemd](https://github.com/ntkme/unifi-systemd).
 
